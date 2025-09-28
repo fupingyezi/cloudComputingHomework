@@ -46,6 +46,40 @@ void testBoundaryCases() {
     printArray(reversed);
 }
 
+// 添加排序验证函数
+bool isSorted(const std::vector<int>& arr) {
+    for (size_t i = 1; i < arr.size(); i++) {
+        if (arr[i] < arr[i - 1]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void testValidation() {
+    std::cout << "\n=== 排序验证测试 ===" << std::endl;
+
+    std::vector<std::vector<int>> testCases = {
+        {3, 1, 4, 1, 5, 9, 2, 6},
+        {9, 8, 7, 6, 5, 4, 3, 2, 1},
+        {1},
+        {}
+    };
+
+    for (size_t i = 0; i < testCases.size(); i++) {
+        std::vector<int> testCase = testCases[i];
+        std::cout << "测试用例 " << i + 1 << ": ";
+        printArray(testCase);
+
+        quicksort(testCase, 0, testCase.size() - 1);
+
+        std::cout << "排序结果: ";
+        printArray(testCase);
+        std::cout << "验证结果: " << (isSorted(testCase) ? "✓ 排序正确" : "✗ 排序错误") << std::endl;
+        std::cout << "---" << std::endl;
+    }
+}
+
 int main() {
     std::cout << "快速排序测试程序" << std::endl;
 
@@ -69,6 +103,7 @@ int main() {
     printArray(arr);
 
     testBoundaryCases();
+    testValidation();
 
     return 0;
 }
