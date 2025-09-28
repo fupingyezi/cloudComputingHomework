@@ -1,49 +1,44 @@
+// 修改main.cpp
 #include "quicksort.h"
 #include <iostream>
 #include <vector>
-#include <random>
+#include <sstream>
 
-std::vector<int> generateRandomArray(int size, int min, int max) {
-    std::vector<int> arr(size);
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(min, max);
+std::vector<int> parseInput(const std::string& input) {
+    std::vector<int> result;
+    std::stringstream ss(input);
+    int number;
 
-    for (int i = 0; i < size; i++) {
-        arr[i] = dis(gen);
+    while (ss >> number) {
+        result.push_back(number);
+        if (ss.peek() == ',' || ss.peek() == ' ') {
+            ss.ignore();
+        }
     }
-    return arr;
+    return result;
 }
 
 int main() {
-    std::cout << "快速排序算法测试" << std::endl;
+    std::cout << "快速排序测试程序" << std::endl;
 
-    // 生成测试数据
-    std::vector<int> arr = generateRandomArray(15, 1, 100);
+    std::string input;
+    std::cout << "请输入要排序的数字(用空格或逗号分隔): ";
+    std::getline(std::cin, input);
+
+    std::vector<int> arr = parseInput(input);
+
+    if (arr.empty()) {
+        std::cout << "输入无效，使用默认测试数据..." << std::endl;
+        arr = {64, 34, 25, 12, 22, 11, 90, 5};
+    }
 
     std::cout << "排序前: ";
     printArray(arr);
 
-    // 执行快速排序
     quicksort(arr, 0, arr.size() - 1);
 
     std::cout << "排序后: ";
     printArray(arr);
-
-    // 验证排序结果
-    bool sorted = true;
-    for (size_t i = 1; i < arr.size(); i++) {
-        if (arr[i] < arr[i - 1]) {
-            sorted = false;
-            break;
-        }
-    }
-
-    if (sorted) {
-        std::cout << "✓ 排序验证成功!" << std::endl;
-    } else {
-        std::cout << "✗ 排序验证失败!" << std::endl;
-    }
 
     return 0;
 }
